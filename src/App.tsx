@@ -1,24 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import NotificationBar from './components/NotificationBar';
+import eventBus from './EventBus';
 
 function App() {
+
+  const [message, setMessage] = useState<string>('Default message');
+
+  const showNotification = () => {
+    eventBus.dispatch("notify", { message: message });
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      <header>
+        Type your notification message and submit 
       </header>
+      <div className="content">
+        <input type="text" id="input" value={message} onChange={(e) => setMessage(e.target.value)}/>
+        <button onClick={()=> showNotification()}>Notify!</button>
+      </div>
+      <NotificationBar/>
     </div>
   );
 }
